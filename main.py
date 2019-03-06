@@ -1,5 +1,5 @@
 import sys
-import scapy.all as scapy
+from scapy import *
 
 if __name__ == "__main__":
     arguments = sys.argv
