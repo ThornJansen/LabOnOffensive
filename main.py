@@ -10,3 +10,8 @@ if __name__ == "__main__":
 
     print(ips)
 
+    arpSpoofing = ArpSpoofing()
+    arpSpoof = arpSpoofing.doSpoof()
+
+    dnsPoisoning = DnsPoisoning()
+    dnsPoison = dnsPoisoning.doPoison()
