@@ -1,10 +1,10 @@
 import sys
 from scapy import *
 
-class DnsPoisoning
+class DnsPoisoning:
 
     def __init__(self):
         pass
 
-    def doPoison:
-        pass
+    def doPoison(self):
+        print("poison")

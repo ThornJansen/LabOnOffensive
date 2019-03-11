@@ -1,5 +1,7 @@
 import sys
 from scapy import *
+from ArpSpoofing import ArpSpoofing
+from DnsPoisoning import DnsPoisoning
 
 if __name__ == "__main__":
     arguments = sys.argv
@@ -9,6 +11,9 @@ if __name__ == "__main__":
         ips.append(ip)
 
     print(ips)
+
+    hostToAttack = ips[0]
+    hostToSpoof = ips[1]
 
     arpSpoofing = ArpSpoofing()
     arpSpoof = arpSpoofing.doSpoof()

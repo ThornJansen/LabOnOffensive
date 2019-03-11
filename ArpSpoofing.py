@@ -6,5 +6,5 @@ class ArpSpoofing:
     def __init__(self):
         pass
 
-    def doSpoof:
-        pass
+    def doSpoof(self):
+        print("spoof")
