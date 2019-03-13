@@ -1,5 +1,5 @@
 import sys
-from scapy import *
+from scapy.all import *
 
 class DnsPoisoning:
 
