@@ -1,4 +1,5 @@
 import sys
+import time
 from scapy.all import *
 
 class DnsPoisoning:

