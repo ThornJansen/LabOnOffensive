@@ -2,11 +2,11 @@ import sys
 from scapy.all import *
 
 class DnsPoisoning:
+    interface = 0
+    def __init__(self, intFace):
+        interface = intFace
 
-    def __init__(self):
-        pass
-
-    def doPoison(self, ipVictim, url, ipPoison, interface):
+    def doPoison(self, ipVictim, url, ipPoison):
 
         def verifyPacket(pkt, ipVictim, url):
             # check if the packet (is a DNS packet) AND (comes from the target)

@@ -1,12 +1,11 @@
 import sys
 from scapy.all import *
 
-class ArpSpoofing:
+class ArpSpoofing():
     interface = 0
 
     def __init__(self, intFace):
         interface = intFace
-        pass
 
     def doSpoof(self, hostToAttack, hostToSpoof):
 
