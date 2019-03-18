@@ -5,7 +5,7 @@ from scapy.all import *
 class DnsPoisoning:
     interface = 0
     def __init__(self, intFace):
-        interface = intFace
+        self.interface = intFace
 
     def doPoison(self, ipVictim, url, ipPoison):
 
