@@ -5,7 +5,7 @@ class ArpSpoofing():
     interface = 0
 
     def __init__(self, intFace):
-        interface = intFace
+        self.interface = intFace
 
     def doSpoof(self, hostToAttack, hostToSpoof):
 
