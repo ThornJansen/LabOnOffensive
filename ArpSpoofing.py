@@ -33,7 +33,7 @@ class ArpSpoofing():
 
         #sends packet
         #counter = 5
-        while True #counter >= 0:
+        while True: #counter >= 0:
             sendp(packet, iface=self.interface, verbose=False)
             print("Spoof Spoof")
             counter -= 1
