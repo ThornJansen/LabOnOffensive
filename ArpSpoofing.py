@@ -32,8 +32,8 @@ class ArpSpoofing():
         packet = etherPart / arpPart
 
         #sends packet
-        counter = 5
-        while counter >= 0:
+        #counter = 5
+        while True #counter >= 0:
             sendp(packet, iface=self.interface, verbose=False)
             print("Spoof Spoof")
             counter -= 1
