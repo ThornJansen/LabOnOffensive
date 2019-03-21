@@ -68,9 +68,6 @@ if __name__ == "__main__":
             ipToSendTo = listArguments[3]
             url = listArguments[4]
 
-    while True:
-        print('x')
-
     if modeOfAttack == "arp":
         arpSpoofing = ArpSpoofing(interface)
         try:
