@@ -57,38 +57,38 @@ if __name__ == "__main__":
     if modeOfAttack == "arp":
         nextOneAttack = "yes"
         while nextOneAttack == "yes":
-            attackIp = input("Please enter ip adress to attack: ")
-            nextOneAttack = input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
+            attackIp = raw_input("Please enter ip adress to attack: ")
+            nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
             hostToAttack.append(attackIp)
-        spoofIp = input("Please enter ip adress to spoof: ")
+        spoofIp = raw_input("Please enter ip adress to spoof: ")
         hostToSpoof = spoofIp
     elif modeOfAttack == "dns":
         nextOneAttack = "yes"
         while nextOneAttack == "yes":
-            attackIp = input("Please enter ip adress to attack: ")
-            nextOneAttack = input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
+            attackIp = raw_input("Please enter ip adress to attack: ")
+            nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
             hostToAttack.append(attackIp)
-        ipSendTo = input("Please enter ip adress to which the URL must go to: ")
+        ipSendTo = raw_input("Please enter ip adress to which the URL must go to: ")
         ipToSendTo = ipSendTo
         urlNext = "yes"
         while urlNext == "yes":
-            newUrl = input("Please enter the URL you want to DNS spoof: ")
-            urlNext = input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
+            newUrl = raw_input("Please enter the URL you want to DNS spoof: ")
+            urlNext = raw_input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
             hostToAttack.append(newUrl)
     elif modeOfAttack == "all":
         nextOneAttack = "yes"
         while nextOneAttack == "yes":
-            attackIp = input("Please enter ip adress to attack: ")
-            nextOneAttack = input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
+            attackIp = raw_input("Please enter ip adress to attack: ")
+            nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
             hostToAttack.append(attackIp)
-        spoofIp = input("Please enter ip adress to spoof: ")
+        spoofIp = raw_input("Please enter ip adress to spoof: ")
         hostToSpoof = spoofIp
-        ipSendTo = input("Please enter ip adress to which the URL must go to: ")
+        ipSendTo = raw_input("Please enter ip adress to which the URL must go to: ")
         ipToSendTo = ipSendTo
         urlNext = "yes"
         while urlNext == "yes":
-            newUrl = input("Please enter the URL you want to DNS spoof: ")
-            urlNext = input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
+            newUrl = raw_input("Please enter the URL you want to DNS spoof: ")
+            urlNext = raw_input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
             hostToAttack.append(newUrl)
     else:
         print("Wrong mode of attack provided choose out of: arp, dns or all")
