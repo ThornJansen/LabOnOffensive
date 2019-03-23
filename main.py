@@ -17,43 +17,20 @@ if __name__ == "__main__":
     ipToSendTo = None
     url = None
 
-    '''
-    #checks if amount of passed arguments is correct
-    if len(sys.argv) != argReq:
-        print("Wrong amount of arguments provide", argReq-1, "arguments")
-        sys.exit(1)
-    '''
-
     #Takes the command like argument and stores it
     modeOfAttack = arguments[1]
     timeSleep = float(arguments[2])
 
-    '''
-    if modeOfAttack == "arp":
-        if len(listArguments) != 3:
-            print("Wrong amount of arguments provided, exiting...")
-            sys.exit(0)
-        else:
-            hostToAttack = listArguments[1]
-            hostToSpoof = listArguments[2]
-    elif modeOfAttack == "dns":
-        if len(listArguments) != 4:
-            print("Wrong amount of arguments provided, exiting...")
-            sys.exit(0)
-        else:
-            hostToAttack = listArguments[1]
-            ipToSendTo = listArguments[2]
-            url = listArguments[3]
-    elif modeOfAttack == "all":
-        if len(listArguments) != 5:
-            print("Wrong amount of arguments provided, exiting...")
-            sys.exit(0)
-        else:
-            hostToAttack = listArguments[1]
-            hostToSpoof = listArguments[2]
-            ipToSendTo = listArguments[3]
-            url = listArguments[4]
-    '''
+    booleanScan = raw_input("Do you want to scan the network for IPs? Enter yes for scanning enter no for not scanning. ")
+    if booleanScan == "yes":
+        ips = raw_input("Enter range of IPs to scan for: (e.g 192.168.56.0/24) ")
+        conf.verb = 0
+        seenIps = srp(Ether(dst= "ff:ff:ff:ff:ff:ff")/ARP(pdst = ips), timeout = 2, iface=interface, inter=0.1)
+        for rcv in seenIps:
+            print rcv.sprintf(r"%Ether.src% - %ARP.psrc%")
+
+
+
     if modeOfAttack == "arp":
         nextOneAttack = "yes"
         while nextOneAttack == "yes":
