@@ -29,7 +29,7 @@ if __name__ == "__main__":
         counter = 0
         ipList = []
         for snt, recv in ans:
-            print ("index: ", counter, "IP: ", recv[ARP].psrc)
+            print("index: {} IP: {}".format(counter,recv[ARP].psrc))
             ipList.append(recv[ARP].psrc)
             counter += 1
         index = ""
@@ -37,7 +37,8 @@ if __name__ == "__main__":
             index = raw_input("Enter the index of the ip you want to add to be attack IPs or no if you are done adding IPs. ")
             if index != "no":
                 intIndex = int(index)
-                hostToAttack.append(ipList[index])
+                hostToAttack.append(ipList[intIndex])
+                index = raw_input("IP added, do you want to select more IP addresses? Write yes or no. ")
 
     if modeOfAttack == "arp":
         nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
