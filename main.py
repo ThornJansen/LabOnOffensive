@@ -25,11 +25,9 @@ if __name__ == "__main__":
     if booleanScan == "yes":
         ips = raw_input("Enter range of IPs to scan for: (e.g 192.168.56.0/24) ")
         conf.verb = 0
-        seenIps = srp(Ether(dst= "ff:ff:ff:ff:ff:ff")/ARP(pdst = ips), timeout = 2, iface=interface, inter=0.1)
-        for rcv in seenIps:
-            print rcv.sprintf(r"%Ether.src% - %ARP.psrc%")
-
-
+        ans, unans = srp(Ether(dst= "ff:ff:ff:ff:ff:ff")/ARP(pdst = ips), timeout = 2, iface=interface, inter=0.1)
+        for snt, recv in ans:
+            print (recv[ARP].prsc, recv[Ether].src)
 
     if modeOfAttack == "arp":
         nextOneAttack = "yes"
