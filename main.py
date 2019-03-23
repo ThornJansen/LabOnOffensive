@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     #Takes the command like argument and stores it
     modeOfAttack = arguments[1]
-    timeSleep = arguments[2]
+    timeSleep = float(arguments[2])
 
     '''
     if modeOfAttack == "arp":

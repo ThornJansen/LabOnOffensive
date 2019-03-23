@@ -35,7 +35,7 @@ class ArpSpoofing():
         packetList = []
         for part in arpPartList:
             packet = etherPart / part
-            packet.append(packet)
+            packetList.append(packet)
 
         #sends packet
 
