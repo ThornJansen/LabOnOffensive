@@ -27,8 +27,7 @@ if __name__ == "__main__":
         conf.verb = 0
         ans, unans = srp(Ether(dst= "ff:ff:ff:ff:ff:ff")/ARP(pdst = ips), timeout = 2, iface=interface, inter=0.1)
         for snt, recv in ans:
-            print (recv[ARP].prsc, recv[Ether].src)
-            print("\n")
+            print (recv[ARP].psrc, recv[Ether].src)
 
     if modeOfAttack == "arp":
         nextOneAttack = "yes"
