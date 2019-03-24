@@ -43,18 +43,18 @@ if __name__ == "__main__":
     if modeOfAttack == "arp":
         nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
         while nextOneAttack == "yes":
-            attackIp = raw_input("Please enter ip adress to attack: ")
-            nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
+            attackIp = raw_input("Please enter ip address to attack: ")
+            nextOneAttack = raw_input("If you want to enter another IP address to attack type yes, otherwise type no. ")
             hostToAttack.append(attackIp)
-        spoofIp = raw_input("Please enter ip adress to spoof: ")
+        spoofIp = raw_input("Please enter ip address to spoof: ")
         hostToSpoof = spoofIp
     elif modeOfAttack == "dns":
-        nextOneAttack = raw_input("Do you want to manualy add IP address to the to be attack IPs? Type yes or no ")
+        nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
         while nextOneAttack == "yes":
-            attackIp = raw_input("Please enter ip adress to attack: ")
-            nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
+            attackIp = raw_input("Please enter ip address to attack: ")
+            nextOneAttack = raw_input("If you want to enter another IP address to attack type yes, otherwise type no. ")
             hostToAttack.append(attackIp)
-        ipSendTo = raw_input("Please enter ip adress to which the URL must go to: ")
+        ipSendTo = raw_input("Please enter ip address to which the URL must go to: ")
         ipToSendTo = ipSendTo
         urlNext = "yes"
         while urlNext == "yes":
@@ -64,12 +64,12 @@ if __name__ == "__main__":
     elif modeOfAttack == "all":
         nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
         while nextOneAttack == "yes":
-            attackIp = raw_input("Please enter ip adress to attack: ")
-            nextOneAttack = raw_input("If you want to enter another IP addres to attack type yes, otherwise type no. ")
+            attackIp = raw_input("Please enter ip address to attack: ")
+            nextOneAttack = raw_input("If you want to enter another IP address to attack type yes, otherwise type no. ")
             hostToAttack.append(attackIp)
-        spoofIp = raw_input("Please enter ip adress to spoof: ")
+        spoofIp = raw_input("Please enter ip address to spoof: ")
         hostToSpoof = spoofIp
-        ipSendTo = raw_input("Please enter ip adress to which the URL must go to: ")
+        ipSendTo = raw_input("Please enter ip address to which the URL must go to: ")
         ipToSendTo = ipSendTo
         urlNext = "yes"
         while urlNext == "yes":
