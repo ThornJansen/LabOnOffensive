@@ -22,7 +22,7 @@ class TrafficRedirect():
                         # set the mac of the true receiver (someone from list target2)
                         pkt[Ether].dst = target2MAC[receiver]
                         break
-                # send the packet 
+                # send the packet
                 send(pkt, iface=interface)
             # same but with source target 2
             elif pkt[Ether].src in target2MAC:
