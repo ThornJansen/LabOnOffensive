@@ -28,9 +28,11 @@ if __name__ == "__main__":
         ans, unans = srp(Ether(dst= "ff:ff:ff:ff:ff:ff")/ARP(pdst = ips), timeout = 2, iface=interface, inter=0.1)
         counter = 0
         ipList = []
+        macList = []
         for snt, recv in ans:
-            print("index: {} IP: {}".format(counter,recv[ARP].psrc))
+            print("index: {} IP: {} MAC: {}".format(counter,recv[ARP].psrc, recv[ARP].hwsrc))
             ipList.append(recv[ARP].psrc)
+            macList.append(recv[ARP].hwsrc)
             counter += 1
         index = ""
         while index != "no":
