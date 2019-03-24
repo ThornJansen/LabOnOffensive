@@ -56,7 +56,7 @@ if __name__ == "__main__":
             if index2 != "no":
                 intIndex2 = int(index2)
                 target2.append(ipList[intIndex2])
-                target2.append(macList[intIndex2])
+                target2MAC.append(macList[intIndex2])
                 index2 = raw_input("IP added, do you want to select more IP addresses? Write yes or no. ")
         oneWayQuestion = raw_input("Only poison one-way? Write yes or no. ")
         if oneWayQuestion == "yes":
@@ -75,7 +75,7 @@ if __name__ == "__main__":
             if index2 != "no":
                 intIndex2 = int(index2)
                 target2.append(ipList[intIndex2])
-                target2.append(macList[intIndex2])
+                target2MAC.append(macList[intIndex2])
                 index2 = raw_input("IP added, do you want to select more IP addresses? Write yes or no. ")
         ipSendTo = raw_input("Please enter IP address to which the URL must go to: ")
         ipToSendTo = ipSendTo
