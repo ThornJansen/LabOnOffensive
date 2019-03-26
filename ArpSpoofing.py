@@ -22,6 +22,7 @@ class ArpSpoofing():
         print("spoof")
 
         myMac = obtainMac()
+        print("My mac", myMac)
         print("post obtainMac")
 
         #Ether part of packet
