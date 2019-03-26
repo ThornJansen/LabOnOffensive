@@ -65,7 +65,9 @@ class ArpSpoofing():
                 redirect.start()
                 print("after thread")
             except:
-                print("Thread arp failed to start")
+                print("Thread traffic redirect failed to start")
+                
+        #Does this sleep time need to be here???
         time.sleep(timeSleep)
         while True:
             for item in packetList:
