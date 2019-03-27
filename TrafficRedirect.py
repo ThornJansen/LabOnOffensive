@@ -67,7 +67,10 @@ class TrafficRedirect():
                             break
                     # send the packet
                     if found:
-                        sendp(pkt, iface=interface)
+                        if pkt.haslayer(DNS):
+                            send(pkt, iface=interface)
+                        else:
+                            sendp(pkt, iface=interface)
 
         if oneway:
             while True:
