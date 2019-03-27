@@ -109,7 +109,7 @@ if __name__ == "__main__":
             dnsPoisoning = SilentDnsPoisoning(interface)
             try:
                 dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison,
-                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo))
+                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo, timeSleep))
                 dnsPoison.daemon = True
                 dnsPoison.start()
             except:
@@ -118,7 +118,7 @@ if __name__ == "__main__":
             dnsPoisoning = DnsPoisoning(interface)
             try:
                 dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison,
-                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo, timeSleep))
+                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo))
                 dnsPoison.daemon = True
                 dnsPoison.start()
             except:
