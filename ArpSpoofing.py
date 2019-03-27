@@ -60,7 +60,7 @@ class ArpSpoofing():
             try:
                 print("before thread")
                 redirect = threading.Thread(name="redirectThread", target=redirecting.doRedirect,
-                                            args=(target1, target2, target1MAC, target2MAC))
+                                            args=(target1, target2, target1MAC, target2MAC, oneway))
                 redirect.daemon = True
                 redirect.start()
                 print("after thread")
