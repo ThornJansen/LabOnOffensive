@@ -106,7 +106,7 @@ if __name__ == "__main__":
     elif modeOfAttack == "dns":
         dnsPoisoning = DnsPoisoning(interface)
         try:
-            dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(target1, target2, target1MAC, target2MAC, urlList, silent, timeSleep))
+            dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(target1, target2, target1MAC, target2MAC, urlList, silent, ipToSendTo))
             dnsPoison.daemon = True
             dnsPoison.start()
         except:

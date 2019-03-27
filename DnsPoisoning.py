@@ -8,8 +8,7 @@ class DnsPoisoning:
     def __init__(self, intFace):
         self.interface = intFace
 
-    def doPoison(self, ipVictim, url, ipPoison, timeSleep):
-    def doPoison(self, target1, target2, target1MAC, target2MAC, urlList, silent):
+    def doPoison(self, target1, target2, target1MAC, target2MAC, url, silent, ipPoison):
 
         def makeFakeResponse(pkt, ipVictim, url, ipPoison, interface):
             # check if the packet (is a DNS packet) AND (comes from the target)
