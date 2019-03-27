@@ -43,10 +43,7 @@ class TrafficRedirect():
                             found = True
                             break
                     if found:
-                        if pkt.haslayer(DNS):
-                            send(pkt, iface=interface)
-                        else:
-                            sendp(pkt, iface=interface)
+                        sendp(pkt, iface=interface)
 
         def makeFakePacketOneWay(pkt, target2, target1MAC, target2MAC, interface):
             if pkt.haslayer(ARP):
@@ -67,10 +64,7 @@ class TrafficRedirect():
                             break
                     # send the packet
                     if found:
-                        if pkt.haslayer(DNS):
-                            send(pkt, iface=interface)
-                        else:
-                            sendp(pkt, iface=interface)
+                        sendp(pkt, iface=interface)
 
         if oneway:
             while True:
