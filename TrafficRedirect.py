@@ -11,9 +11,7 @@ class TrafficRedirect():
     def doRedirect(self, target1, target2, target1MAC, target2MAC, oneway):
 
         def makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, interface):
-            if pkt.haslayer(ARP):
-                print("ARP packet: do not redirect")
-            else:
+            if pkt.haslayer(IP) and pkt.haslayer(Ether):
                 # if source is target 1 then someone from target 2 must be the true reciever
                 if pkt[Ether].src in target1MAC:
                     print("Traffic from machine 1")
@@ -46,9 +44,7 @@ class TrafficRedirect():
                         sendp(pkt, iface=interface)
 
         def makeFakePacketOneWay(pkt, target2, target1MAC, target2MAC, interface):
-            if pkt.haslayer(ARP):
-                print("ARP packet: do not redirect")
-            else:
+            if pkt.haslayer(IP) and pkt.haslayer(Ether):
                 # if source is target 1 then someone from target 2 must be the true receiver
                 if pkt[Ether].src in target1MAC:
                     print("Traffic from machine 1")

