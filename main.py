@@ -8,7 +8,6 @@ from SilentDnsPoisoning import SilentDnsPoisoning
 if __name__ == "__main__":
     #global variables
     arguments = sys.argv
-    #argReq = 6
     interface = "enp0s3"
     arpSpoof = None
     dnsPoison = None
@@ -55,6 +54,22 @@ if __name__ == "__main__":
             target2.append(ipList[intIndex2])
             target2MAC.append(macList[intIndex2])
             index2 = raw_input("IP added, do you want to select more IP addresses? Write yes or no: ")
+
+    with open('target1ListIP.txt', 'w') as file1:
+        for item in target1:
+            file1.write('%s\n' % item)
+
+    with open('target2ListIP.txt', 'w') as file2:
+        for item in target2:
+            file2.write('%s\n' % item)
+
+    with open('target1ListMAC.txt', 'w') as file3:
+        for item in target1MAC:
+            file3.write('%s\n' % item)
+
+    with open('target2ListMAC.txt', 'w') as file4:
+        for item in target2MAC:
+            file4.write('%s\n' % item)
 
 
     if modeOfAttack == "arp":
