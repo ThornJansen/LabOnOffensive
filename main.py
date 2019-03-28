@@ -120,11 +120,12 @@ if __name__ == "__main__":
         except:
             print("Thread arp failed to start")
     elif modeOfAttack == "dns":
+        stop_event = threading.Event()
         if silent:
             dnsPoisoning = SilentDnsPoisoning(interface)
             try:
                 dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison,
-                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo, timeSleep))
+                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo, timeSleep, stop_event))
                 dnsPoison.daemon = True
                 dnsPoison.start()
             except:
@@ -133,7 +134,7 @@ if __name__ == "__main__":
             dnsPoisoning = DnsPoisoning(interface)
             try:
                 dnsPoison = threading.Thread(name="dnsThread", target=dnsPoisoning.doPoison,
-                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo))
+                                             args=(target1, target2, target1MAC, target2MAC, urlList, ipToSendTo, stop_event))
                 dnsPoison.daemon = True
                 dnsPoison.start()
             except:
@@ -147,6 +148,8 @@ if __name__ == "__main__":
     if modeOfAttack == "arp":
         arpSpoof.join()
     elif modeOfAttack == "dns":
+        killDns = raw_input("Enter anything to stop spoofing")
+        stop_event.set()
         dnsPoison.join()
 
     print("reached end of the main file")

