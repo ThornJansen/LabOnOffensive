@@ -11,6 +11,7 @@ if __name__ == "__main__":
     target2MAC = []
     arpPartList = []
 
+    '''
     ips = raw_input("Enter range of IPs you scanned for before: (e.g 192.168.56.0/24): ")
     conf.verb = 0
     ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(pdst=ips), timeout=2, iface=interface, inter=0.1)
@@ -38,8 +39,40 @@ if __name__ == "__main__":
             target2.append(ipList[intIndex2])
             target2MAC.append(macList[intIndex2])
             index2 = raw_input("IP added, do you want to select more IP addresses? Write yes or no: ")
+    '''
 
-    #WE NEED A WAY NOT TO DO THIS INPUT AGAIN BUT STORE IN A FILE SOMEWHERE OR SOMETHING
+    # open file and read the content in a list
+    with open('target1ListIP.txt', 'r') as file1:
+        for line in file1:
+            # remove linebreak which is the last character of the string
+            currentPlace = line[:-1]
+
+            # add item to the list
+            target1.append(currentPlace)
+
+    with open('target2ListIP.txt', 'r') as file2:
+        for line in file2:
+            # remove linebreak which is the last character of the string
+            currentPlace = line[:-1]
+
+            # add item to the list
+            target2.append(currentPlace)
+
+    with open('target1ListMAC.txt', 'r') as file3:
+        for line in file3:
+            # remove linebreak which is the last character of the string
+            currentPlace = line[:-1]
+
+            # add item to the list
+            target1MAC.append(currentPlace)
+
+    with open('target1ListIP.txt', 'r') as file4:
+        for line in file4:
+            # remove linebreak which is the last character of the string
+            currentPlace = line[:-1]
+
+            # add item to the list
+            target2MAC.append(currentPlace)
 
     for i in range(len(target1)):
         for j in range(len(target2)):
@@ -49,5 +82,5 @@ if __name__ == "__main__":
             arpPartList.append(arpPart)
 
     for item in arpPartList:
-        send(item, iface=self.interface, verbose=False)
+        send(item, iface=interface, verbose=False)
 
