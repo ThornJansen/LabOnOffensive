@@ -66,7 +66,7 @@ if __name__ == "__main__":
             # add item to the list
             target1MAC.append(currentPlace)
 
-    with open('target1ListIP.txt', 'r') as file4:
+    with open('target2ListMAC.txt', 'r') as file4:
         for line in file4:
             # remove linebreak which is the last character of the string
             currentPlace = line[:-1]

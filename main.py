@@ -57,19 +57,19 @@ if __name__ == "__main__":
 
     with open('target1ListIP.txt', 'w') as file1:
         for item in target1:
-            filehandle.write('%s\n' % item)
+            file1.write('%s\n' % item)
 
     with open('target2ListIP.txt', 'w') as file2:
         for item in target2:
-            filehandle.write('%s\n' % item)
+            file2.write('%s\n' % item)
 
     with open('target1ListMAC.txt', 'w') as file3:
         for item in target1MAC:
-            filehandle.write('%s\n' % item)
+            file3.write('%s\n' % item)
 
     with open('target2ListMAC.txt', 'w') as file4:
         for item in target2MAC:
-            filehandle.write('%s\n' % item)
+            file4.write('%s\n' % item)
 
 
     if modeOfAttack == "arp":
