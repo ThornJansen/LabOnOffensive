@@ -8,7 +8,6 @@ from SilentDnsPoisoning import SilentDnsPoisoning
 if __name__ == "__main__":
     #global variables
     arguments = sys.argv
-    #argReq = 6
     interface = "enp0s3"
     arpSpoof = None
     dnsPoison = None
