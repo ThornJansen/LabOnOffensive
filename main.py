@@ -110,10 +110,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if modeOfAttack == "arp":
+        stop_event = threading.Event()
         arpSpoofing = ArpSpoofing(interface)
         try:
             print("before thread")
-            arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof, args=(target1, target2, target1MAC, target2MAC, oneWay, silent, timeSleep))
+            arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof, args=(target1, target2, target1MAC, target2MAC, oneWay, silent, timeSleep, stop_event))
             arpSpoof.daemon = True
             arpSpoof.start()
             print("after thread")
@@ -146,9 +147,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if modeOfAttack == "arp":
+        killDns = raw_input("Enter any text to stop spoofing:")
+        stop_event.set()
         arpSpoof.join()
     elif modeOfAttack == "dns":
-        killDns = raw_input("Enter anything to stop spoofing")
+        killDns = raw_input("Enter any text to stop spoofing:")
         stop_event.set()
         dnsPoison.join()
 
