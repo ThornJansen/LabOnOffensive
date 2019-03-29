@@ -93,6 +93,6 @@ class SilentDnsPoisoning:
                   prn=lambda pkt: makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, url, ipPoison,
                                                  self.interface), iface=self.interface)
         print("DNS poisoning is stopped.")
-        print("Stopping the ARP poisoning")
+        print("Stopping the ARP poisoning...")
         stop_event2.set()
         arpSpoof.join()
