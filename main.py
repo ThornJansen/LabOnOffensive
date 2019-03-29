@@ -156,11 +156,13 @@ if __name__ == "__main__":
     if modeOfAttack == "arp":
         print("Enter any text to stop poisoning: ")
         killDns = raw_input("")
+        print("Stopping the ARP poisoning...")
         stop_event.set()
         arpSpoof.join()
     elif modeOfAttack == "dns":
         print("Enter any text to stop poisoning")
         killDns = raw_input("")
+        print("Stopping the DNS poisoning...")
         stop_event.set()
         dnsPoison.join()
     print("Reached end of the main file ")

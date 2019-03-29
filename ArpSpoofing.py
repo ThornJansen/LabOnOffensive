@@ -71,7 +71,9 @@ class ArpSpoofing():
             for item in packetList:
                 sendp(item, iface=self.interface, verbose=False)
             time.sleep(timeSleep)
+        print("ARP poisoning is stopped.")
         if silent:
+            print("Stopping the traffic redirect...")
             stop_event2.set()
             redirect.join()
 
