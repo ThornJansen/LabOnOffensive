@@ -39,8 +39,8 @@ if __name__ == "__main__":
         macList.append(recv[ARP].hwsrc)
         counter += 1
     index = ""
+    print("Note: if no IPs are added to Target 1, then the whole network will be selected. ")
     while index != "no":
-        print("Note: if no IPs are added to Target 1, then the whole network will be selected. ")
         index = raw_input("Enter the index of the IP to add to Target 1 or 'no' if you are done adding the IPs: ")
         if index != "no":
             intIndex = int(index)
@@ -52,10 +52,10 @@ if __name__ == "__main__":
             target1.append(ipList[i])
             target1MAC.append(macList[i])
     index2 = ""
+    print("Note: if no IPs are added to Target 2, then the whole network will be selected. ")
     while index2 != "no":
-        print("Note: if no IPs are added to Target 2, then the whole network will be selected. ")
         index2 = raw_input("Enter the index of the IP to add to Target 2 or 'no' if you are done adding the IPs: ")
-        if index2 != "":
+        if index2 != "no":
             intIndex2 = int(index2)
             target2.append(ipList[intIndex2])
             target2MAC.append(macList[intIndex2])
@@ -96,11 +96,13 @@ if __name__ == "__main__":
         index2 = ""
         ipSendTo = raw_input("Please enter IP address to which the URL must go to: ")
         ipToSendTo = ipSendTo
-        urlNext = "yes"
-        while urlNext == "yes":
-            newUrl = raw_input("Please enter the URL you want to DNS spoof: ")
-            urlNext = raw_input("If you want to enter another URL type 'yes', otherwise type 'no': ")
-            urlList.append(newUrl)
+        newUrl = "no"
+        print("Note: if no URLs are added, then every URL request will be spoofed. ")
+        while newUrl != "no":
+            newUrl = raw_input("Enter the URL you want to add to DNS spoof list or 'no' if you are done adding: ")
+            if newUrl != "no":
+                urlList.append(newUrl)
+                newUrl = raw_input("URL added, do you want to add more URLs? Write 'yes' or 'no': ")
         silentQuestion = raw_input("Perform attack in silent mode? Write 'yes' or 'no': ")
         if silentQuestion == "yes":
             silent = True
@@ -108,14 +110,6 @@ if __name__ == "__main__":
             silent = False
     else:
         print("Wrong mode of attack provided choose out of: arp or dns")
-        sys.exit(1)
-
-    if len(target1) == 0:
-        print("You did not add any IP addresses to Target 1, exiting...")
-        sys.exit(1)
-
-    if len(target2) == 0:
-        print("You did not add any IP addresses to Target 2, exiting...")
         sys.exit(1)
 
     if modeOfAttack == "arp":
