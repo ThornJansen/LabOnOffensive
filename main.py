@@ -98,7 +98,7 @@ if __name__ == "__main__":
         index2 = ""
         ipSendTo = raw_input("Please enter IP address to which the URL must go to: ")
         ipToSendTo = ipSendTo
-        newUrl = "no"
+        newUrl = ""
         print("Note: if no URLs are added, then every URL request will be spoofed. ")
         while newUrl != "no":
             newUrl = raw_input("Enter the URL you want to add to DNS spoof list or 'no' if you are done adding: ")
@@ -150,13 +150,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if modeOfAttack == "arp":
-        print("Enter any text to stop poisoning: ")
+        print("Hit enter to stop poisoning ")
         killDns = raw_input("")
         print("Stopping the ARP poisoning...")
         stop_event.set()
         arpSpoof.join()
     elif modeOfAttack == "dns":
-        print("Enter any text to stop poisoning")
+        print("Hit enter to stop poisoning ")
         killDns = raw_input("")
         print("Stopping the DNS poisoning...")
         stop_event.set()
