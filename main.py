@@ -27,7 +27,9 @@ if __name__ == "__main__":
     timeSleep = float(arguments[2])
 
     print("We will start scanning the network.")
+    interface = raw_input("Enter the interface you want to scan on: ")
     ips = raw_input("Enter range of IPs to scan for: (e.g 192.168.56.0/24): ")
+    print("Scanning the network...")
     conf.verb = 0
     ans, unans = srp(Ether(dst= "ff:ff:ff:ff:ff:ff")/ARP(pdst = ips), timeout = 2, iface=interface, inter=0.1)
     counter = 0
