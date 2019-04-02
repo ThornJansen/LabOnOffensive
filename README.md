@@ -9,7 +9,7 @@ In order to run the application on the system the following needs to be installe
 Without installing the above mentioned modules the application will not be able to run.
 
 ## Installing
-In order to run the application Github repository should be cloned to a directory chosen by the user. No other steps are required. Python can be downloaded from: [Download Python](https://www.python.org/downloads/)
+In order to run the application Github repository should be cloned to a directory chosen by the user. No other steps are required. Python can be downloaded from: [Download Python](https://www.python.org/downloads/).
 Pip can be used through the command prompt to install the required library. Pip comes standard with installing Python.
 
 ## Execution
